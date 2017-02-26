@@ -1,0 +1,47 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+
+        classpath 'com.android.tools.build:gradle:2.2.3'
+
+        classpath 'com.jakewharton:butterknife-gradle-plugin:8.5.1'
+
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+task startAppEngine( dependsOn : [':jokesBackend:appengineRun'])<< {
+    project(':jokesBackend').appengine.daemon = true
+    println '-- Started GCE Local development Server --'
+}
+
+task runAllTest( dependsOn: [ ':app:check']) << {
+    println '-- All test cases executed. --'
+}
+
+task stopAppEngine( dependsOn: ['jokesBackend:appengineStop']) <<{
+    println '-- Stopped GCE Local development Server --'
+}
+
+
+task runAllTask(dependsOn: [clean, startAppEngine, runAllTest, stopAppEngine]) << {
+    println '-- All custom task executed --'
+}
+

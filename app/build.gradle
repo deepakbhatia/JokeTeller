@@ -1,0 +1,114 @@
+apply plugin: 'com.android.application'
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        applicationId "com.optimalcities.jokes.builditbigger"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+
+    sourceSets {
+
+        androidTest {
+            java.srcDirs = ['androidTest/java']
+        }
+    }
+
+    productFlavors {
+
+        free{
+            applicationId "com.optimalcities.jokes.builditbigger.free"
+        }
+
+        paid{
+            applicationId "com.optimalcities.jokes.builditbigger.paid"
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2')
+
+
+    compile project(':jokelib')
+    compile project(':jokeDisplaylib')
+    compile ('com.android.support:appcompat-v7:25.1.0'){
+        exclude group: 'com.android.support'
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    compile 'com.jakewharton:butterknife:8.5.1'
+    compile 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.google.code.findbugs:jsr305:2.0.1'
+    compile ('com.android.support:support-v4:25.1.0'){
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
+
+
+    freeCompile ('com.google.android.gms:play-services-ads:10.0.1')
+
+    // Add the Google API client library.
+    compile(group: 'com.google.api-client', name: 'google-api-client', version: '1.21.0') {
+        // Exclude artifacts that the Android SDK/Runtime provides.
+        exclude(group: 'xpp3', module: 'xpp3')
+        exclude(group: 'org.apache.httpcomponents', module: 'httpclient')
+        exclude(group: 'junit', module: 'junit')
+        exclude(group: 'com.google.android', module: 'android')
+        exclude group: 'com.google.guava'
+
+    }
+
+    // Android extensions for Google HTTP Client.
+    compile(group: 'com.google.http-client', name: 'google-http-client-android',
+            version: '1.21.0') {
+        exclude(group: 'com.google.android', module: 'android')
+        exclude(group: 'org.apache.httpcomponents', module: 'httpclient')
+        exclude group: 'com.google.guava'
+
+    }
+
+    compile(group: 'com.google.api-client', name: 'google-api-client-android',
+            version: '1.21.0')
+            {
+                // Exclude play services, since we're not using this yet.
+                exclude(group: 'com.google.android.gms:play-services', module: 'google-play-services')
+                exclude(group: 'org.apache.httpcomponents', module: 'httpclient')
+                exclude group: 'com.google.guava'
+
+            }
+
+    // Android Support Library for instrumented tests
+    androidTestCompile 'com.android.support:support-annotations:25.1.0'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+}
+configurations.all {
+    resolutionStrategy {
+        force 'com.google.code.findbugs:jsr305:1.3.9', 'com.google.code.findbugs:jsr305:2.0.1'
+        exclude group: 'com.google.common', module: 'annotations'
+
+    }
+}
+
+
+
+
+
